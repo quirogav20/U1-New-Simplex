@@ -60,4 +60,50 @@ while np.any(tabla[m, :-1]< 0):
     print("")       
     return solucion, z
 
+def main():
+    while True:
+        print("--------------------------------")
+        print("         Método Simplex")
+        print("--------------------------------")
+        print("1. MAXIMIZACIÓN")
+        print("2. MINIMIZACIÓN")
+        print("3. SALIR")
+
+        option = input("Seleccione una opción (1-3): ")
+
+        if option == '3':
+            print("Saliendo del programa.")
+            break
+
+        if option not in ['1', '2']:
+            print("Opción inválida. Intente de nuevo.")
+            continue
+        maximizar = (option == '1')
+        n =int(input("Ingrese el número de variables: "))
+        
+        print("Ingrese los coeficientes de la función objetivo:" )
+        c = np.array([float(input(f"c{i + 1}: ")) for i in range(n)])
+        m = int(input("Ingrese el número de restricciones: "))
+        A = []
+        b = []
+        tipos=[]
+        print ("Ingresa cada restricción: ")
+        for i in range(m):
+            print(f"Restricción {i + 1}:")
+            fila = [float(input(f" Coed. x{j+1}: "))for j in range (n)]
+            tipo = input (" Tipo de restricción ('<=', '>=', '='): ").strip()
+            while tipo not in ['<=', '>=', '=']:
+                tipo = input(" Tipo inválido. Utiliza '<=', '>=', o '=': ").strip()
+            lado = float (input(" Lado derecho: "))
+            if tipo == '>=':
+                fila = [-x for x in fila]
+                lado = -lado
+            A.append(fila)
+            b.append(lado)
+            tipos.append(tipo)
+        A= np.array(A)
+        b= np.array(b)
+        print ("--------------------------------")
+                        
+           
 
