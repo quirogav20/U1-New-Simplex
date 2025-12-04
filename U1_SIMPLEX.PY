@@ -116,6 +116,8 @@ def main():
         resultado = simplex(c, A, b, maximizar)
         if resultado[0] is None:
             print("No se pudo resolver el problema.")
+if __name__ == "__main__":
+    main()
 
            
 
