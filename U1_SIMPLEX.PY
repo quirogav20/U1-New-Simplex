@@ -9,41 +9,40 @@ def simplex(c, A, b, maximizar = True):
         c = -c
         print("convirtiendo a maximización")
 
-m, n = A.shape
-tabla =np.zeros((m + 1, n + m + 1))   
-tabla[:m, :n]= A
-tabla[:m, n:n+m]= np.eye(m)
-tabla[:m, -1]= b
-tabla[:m, :n] = -c
+    m, n = A.shape
+    tabla =np.zeros((m + 1, n + m + 1))   
+    tabla[:m, :n]= A
+    tabla[:m, n:n+m]= np.eye(m)
+    tabla[:m, -1]= b
+    tabla[:m, :n] = -c
 
-print ("Tabla:")
-print(tabla)
-
-iteracion = 0
-while np.any(tabla[m, :-1]< 0):
-    col_pivote = np.argmin(tabla[m, :-1])
-    ratios = []
-    for i in range(m):
-        if tabla[i, col_pivote]> 0:
-            ratios.append( tabla[i, -1]/tabla[i, col_pivote])    
-        else:
-            ratios.append(np.inf)
-    fila_pivote = np.argmin(ratios)
-
-    pivote = tabla[fila_pivote, col_pivote]
-    if pivote == 0:
-        print("el problema no tiene solución")
-        return None, None
-        
-
-    tabla [fila_pivote] /= pivote
-    for i in range(m + 1):
-        if i != fila_pivote:
-            tabla[i] -= tabla[i, col_pivote] * tabla[fila_pivote]  
-
-    iteracion += 1
-    print(f"Iteración {iteracion}:")     
+    print ("Tabla:")
     print(tabla)
+
+    iteracion = 0
+    while np.any(tabla[m, :-1]< 0):
+        col_pivote = np.argmin(tabla[m, :-1])
+        ratios = []
+        for i in range(m):
+            if tabla[i, col_pivote]> 0:
+                ratios.append( tabla[i, -1]/tabla[i, col_pivote])    
+            else:
+                ratios.append(np.inf)
+        fila_pivote = np.argmin(ratios)
+
+        pivote = tabla[fila_pivote, col_pivote]
+        if pivote == 0:
+            print("el problema no tiene solución")
+            return None, None
+
+        tabla [fila_pivote] /= pivote
+        for i in range(m + 1):
+            if i != fila_pivote:
+                tabla[i] -= tabla[i, col_pivote] * tabla[fila_pivote]  
+
+        iteracion += 1
+        print(f"Iteración {iteracion}:")     
+        print(tabla)
 
     solucion = np.zeros(n)
     for j in range(n):
@@ -104,6 +103,19 @@ def main():
         A= np.array(A)
         b= np.array(b)
         print ("--------------------------------")
-                        
+        print(f"{'MAXIMIZAR' if maximizar else 'MINIMIZAR'}: Z = {' + '.join([f'{c[i]:.1f}x{i+1}' for i in range(n)])}")
+        print("Sujeto a:")
+        for i in range(m):
+            if tipos[i] == '>=':
+                coefs = [-A[i,j] for j in range(n)]
+                print(f"  {' + '.join([f'{coefs[j]:.1f}x{j+1}' for j in range(n)])} >= {-b[i]:.1f}")
+            else:
+                print(f"  {' + '.join([f'{A[i,j]:.1f}x{j+1}' for j in range(n)])} {tipos[i]} {b[i]:.1f}")
+        print(f"  {', '.join([f'x{i+1}' for i in range(n)])} >= 0")
+        
+        resultado = simplex(c, A, b, maximizar)
+        if resultado[0] is None:
+            print("No se pudo resolver el problema.")
+
            
 
