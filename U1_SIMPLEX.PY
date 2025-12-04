@@ -33,7 +33,7 @@ while np.any(tabla[m, :-1]< 0):
     pivote = tabla[fila_pivote, col_pivote]
     if pivote == 0:
         print("el problema no tiene solución")
-        return None
+        return None, None
         
 
     tabla [fila_pivote] /= pivote
@@ -45,5 +45,19 @@ while np.any(tabla[m, :-1]< 0):
     print(f"Iteración {iteracion}:")     
     print(tabla)
 
+    solucion = np.zeros(n)
+    for j in range(n):
+        col = tabla[:m,j]
+        if np.sum(col == 1) == 1 and np.sum(col == 0)== m -1:
+            solucion[j]=tabla[np.where(col == 1)[0][0], -1]
+
+    z = tabla[m, -1] if maximizar else -tabla[m, -1]
+    print("")
+    print("Solución óptima:")
+    for i in range(n):
+        print(f"x{i + 1} = {solucion[i]}") 
+    print(f" Z {'maximo' if maximizar else 'mínimo'} = {z}")
+    print("")       
+    return solucion, z
 
 
