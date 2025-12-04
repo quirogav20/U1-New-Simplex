@@ -22,6 +22,28 @@ print(tabla)
 iteracion = 0
 while np.any(tabla[m, :-1]< 0):
     col_pivote = np.argmin(tabla[m, :-1])
+    ratios = []
+    for i in range(m):
+        if tabla[i, col_pivote]> 0:
+            ratios.append( tabla[i, -1]/tabla[i, col_pivote])    
+        else:
+            ratios.append(np.inf)
+    fila_pivote = np.argmin(ratios)
 
-    
+    pivote = tabla[fila_pivote, col_pivote]
+    if pivote == 0:
+        print("el problema no tiene solución")
+        return None
+        
+
+    tabla [fila_pivote] /= pivote
+    for i in range(m + 1):
+        if i != fila_pivote:
+            tabla[i] -= tabla[i, col_pivote] * tabla[fila_pivote]  
+
+    iteracion += 1
+    print(f"Iteración {iteracion}:")     
+    print(tabla)
+
+
 
