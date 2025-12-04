@@ -14,7 +14,7 @@ def simplex(c, A, b, maximizar = True):
     tabla[:m, :n]= A
     tabla[:m, n:n+m]= np.eye(m)
     tabla[:m, -1]= b
-    tabla[:m, :n] = -c
+    tabla[m, :n] = -c
 
     print ("Tabla:")
     print(tabla)
@@ -111,7 +111,7 @@ def main():
 
         A= np.array(A)
         b= np.array(b)
-        
+
         print ("--------------------------------")
         print(f"{'MAXIMIZAR' if maximizar else 'MINIMIZAR'}: Z = {' + '.join([f'{c[i]:.1f}x{i+1}' for i in range(n)])}")
         print("Sujeto a: ")
