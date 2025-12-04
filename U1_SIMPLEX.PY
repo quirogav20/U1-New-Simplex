@@ -104,7 +104,7 @@ def main():
         b= np.array(b)
         print ("--------------------------------")
         print(f"{'MAXIMIZAR' if maximizar else 'MINIMIZAR'}: Z = {' + '.join([f'{c[i]:.1f}x{i+1}' for i in range(n)])}")
-        print("Sujeto a:")
+        print("Sujeto a: ")
         for i in range(m):
             if tipos[i] == '>=':
                 coefs = [-A[i,j] for j in range(n)]
