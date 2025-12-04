@@ -1,6 +1,6 @@
 import numpy as np
 
-print("hello world")
+
 print("Bienvendio al método simplex")
 
 def simplex(c, A, b, maximizar = True):
@@ -22,6 +22,7 @@ def simplex(c, A, b, maximizar = True):
     iteracion = 0
     while np.any(tabla[m, :-1]< 0):
         col_pivote = np.argmin(tabla[m, :-1])
+
         ratios = []
         for i in range(m):
             if tabla[i, col_pivote]> 0:
@@ -35,7 +36,7 @@ def simplex(c, A, b, maximizar = True):
             print("el problema no tiene solución")
             return None, None
 
-        tabla [fila_pivote] /= pivote
+        tabla[fila_pivote] /= pivote
         for i in range(m + 1):
             if i != fila_pivote:
                 tabla[i] -= tabla[i, col_pivote] * tabla[fila_pivote]  
@@ -48,15 +49,17 @@ def simplex(c, A, b, maximizar = True):
     for j in range(n):
         col = tabla[:m,j]
         if np.sum(col == 1) == 1 and np.sum(col == 0)== m -1:
-            solucion[j]=tabla[np.where(col == 1)[0][0], -1]
+            solucion[j] = tabla[np.where(col == 1)[0][0], -1]
 
     z = tabla[m, -1] if maximizar else -tabla[m, -1]
+
     print("")
     print("Solución óptima:")
     for i in range(n):
-        print(f"x{i + 1} = {solucion[i]}") 
-    print(f" Z {'maximo' if maximizar else 'mínimo'} = {z}")
-    print("")       
+        print(f"  x{i+1} = {solucion[i]:.2f}")
+    print(f" Z {'maximo' if maximizar else 'mínimo'} = {z:.2f}")
+    print("") 
+
     return solucion, z
 
 def main():
@@ -77,11 +80,12 @@ def main():
         if option not in ['1', '2']:
             print("Opción inválida. Intente de nuevo.")
             continue
+
         maximizar = (option == '1')
         n =int(input("Ingrese el número de variables: "))
         
         print("Ingrese los coeficientes de la función objetivo:" )
-        c = np.array([float(input(f"c{i + 1}: ")) for i in range(n)])
+        c = np.array([float(input(f" x{i + 1}: ")) for i in range(n)])
         m = int(input("Ingrese el número de restricciones: "))
         A = []
         b = []
@@ -89,19 +93,25 @@ def main():
         print ("Ingresa cada restricción: ")
         for i in range(m):
             print(f"Restricción {i + 1}:")
-            fila = [float(input(f" Coed. x{j+1}: "))for j in range (n)]
+            fila = [float(input(f" Condición . x{j+1}: "))for j in range (n)]
             tipo = input (" Tipo de restricción ('<=', '>=', '='): ").strip()
+
             while tipo not in ['<=', '>=', '=']:
                 tipo = input(" Tipo inválido. Utiliza '<=', '>=', o '=': ").strip()
+
             lado = float (input(" Lado derecho: "))
+
             if tipo == '>=':
                 fila = [-x for x in fila]
                 lado = -lado
+
             A.append(fila)
             b.append(lado)
             tipos.append(tipo)
+
         A= np.array(A)
         b= np.array(b)
+        
         print ("--------------------------------")
         print(f"{'MAXIMIZAR' if maximizar else 'MINIMIZAR'}: Z = {' + '.join([f'{c[i]:.1f}x{i+1}' for i in range(n)])}")
         print("Sujeto a: ")
